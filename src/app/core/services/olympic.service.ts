@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
 import { OlympicCountry } from '../models/Olympic';
+import { Participation } from '../models/Participation';
+
 
 @Injectable({
   providedIn: 'root',
@@ -29,4 +31,24 @@ export class OlympicService {
   getOlympics() {
     return this.olympics$.asObservable();
   }
+
+  getDataOlympicsCountry(country : string): Observable<Participation[]> {
+    return this.getOlympics().pipe(
+      map((tabOlympicCountry : OlympicCountry[]) => tabOlympicCountry && tabOlympicCountry.filter(olympicCountry => olympicCountry.country === country)),
+      map((tabOlympicCountry : OlympicCountry[]) => tabOlympicCountry && tabOlympicCountry[0].participations),
+      catchError((error) => {
+        return throwError(() => error.message)
+      }))
+  }
+
+  getNumberOfJO(tabOlympicCountry : OlympicCountry[]): number {
+    let tabYearsOlympic : number[] = [];
+    tabOlympicCountry.forEach(country => country.participations.forEach(participation => {
+      if(!tabYearsOlympic.includes(participation.year))
+        tabYearsOlympic.push(participation.year)
+    }))
+    return tabYearsOlympic.length;
+  }
+
+
 }
