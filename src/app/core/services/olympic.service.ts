@@ -32,23 +32,4 @@ export class OlympicService {
     return this.olympics$.asObservable();
   }
 
-  getDataOlympicsCountry(country : string): Observable<Participation[]> {
-    return this.getOlympics().pipe(
-      map((tabOlympicCountry : OlympicCountry[]) => tabOlympicCountry && tabOlympicCountry.filter(olympicCountry => olympicCountry.country === country)),
-      map((tabOlympicCountry : OlympicCountry[]) => tabOlympicCountry && tabOlympicCountry[0].participations),
-      catchError((error) => {
-        return throwError(() => error.message)
-      }))
-  }
-
-  getNumberOfJO(tabOlympicCountry : OlympicCountry[]): number {
-    let tabYearsOlympic : number[] = [];
-    tabOlympicCountry.forEach(country => country.participations.forEach(participation => {
-      if(!tabYearsOlympic.includes(participation.year))
-        tabYearsOlympic.push(participation.year)
-    }))
-    return tabYearsOlympic.length;
-  }
-
-
 }
