@@ -3,7 +3,6 @@
 <p>{{ (olympics$ | async)?.length }} data loaded</p>
 <ngx-charts-pie-chart
   [view]="[700, 400]"
-  [scheme]="'forest'"
   [results]="olympicArray"
   [gradient]="gradient"
   [legend]="showLegend"

@@ -7,8 +7,6 @@ import { multi } from './data';
 
 @Component({
   selector: 'app-detail-country',
-  standalone: true,
-  imports: [],
   templateUrl: './detail-country.component.html',
   styleUrl: './detail-country.component.scss'
 })
