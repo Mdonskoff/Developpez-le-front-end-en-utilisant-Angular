@@ -16,7 +16,10 @@ export class HomeComponent implements OnInit {
   public olympics$: Observable<OlympicCountry[]> = of();
 
   olympicArray!: Object[];
-  totalMedals: number = 0
+  totalMedals: number = 0;
+
+  numberOfJOs: number = 0;
+  numberOfCountry: number = 0;
   
   
   view: number[] = [700, 400];
@@ -41,7 +44,9 @@ export class HomeComponent implements OnInit {
           let tempOlympicArray: Object[] = [] //tableau temporaire avec le nom des pays et des médailles (fichier json de la doc)
         dataCountry.forEach(data => {
           this.totalMedals = 0 //compter le nbr de médailles à chaque participation
-          
+          if (this.numberOfJOs < data.participations.length) {
+            this.numberOfJOs = data.participations.length
+          }
           data.participations.forEach(participation => { //boucle sur participation d'un pays
             this.totalMedals = this.totalMedals + participation.medalsCount  //add toutes les médailles de chaque participation
           })
@@ -54,7 +59,6 @@ export class HomeComponent implements OnInit {
   }
 
   onSelect(countryName: {name: string}): void {  //au click on va dans l'autre URL du pays sélectionné
-    //console.log('Item clicked', JSON.parse(JSON.stringify(countryName)));
     this.router.navigateByUrl(`/detail/${countryName.name}`)
   }
 }
