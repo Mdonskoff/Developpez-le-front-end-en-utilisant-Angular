@@ -1,16 +1,34 @@
-<h2>Olympic Games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }}</p>
+<div class="mainPage">
+  <div class="titleOfPage">
+    <h2>Medals per Country</h2>
+  </div>
 
-{{ numberOfJOs }}
+  <div class="informationGroup">
+    <div class="informationFrame">  
+      <p>  
+        Number of JOs 
+        <span>{{ numberOfJOs }}</span> 
+        </p>
+      </div>
 
-<ngx-charts-pie-chart
-  [view]="[700, 400]"
-  [results]="olympicArray"
-  [gradient]="gradient"
-  [legendPosition]="legendPosition"
-  [labels]="showLabels"
-  [doughnut]="isDoughnut"
-  (select)="onSelect($event)"
-  >
-</ngx-charts-pie-chart>
+      <div class="informationFrame">  
+        <p> 
+          Number of Countries 
+          <span>{{ (olympics$ | async)?.length }}</span>
+        </p>
+      </div>
+  </div>
+
+  <ngx-charts-pie-chart
+    (window:resize)="onResize($event)"
+    [view]="[700, 400]"
+    [results]="olympicArray"
+    [gradient]="gradient"
+    [legendPosition]="legendPosition"
+    [labels]="showLabels"
+    [doughnut]="isDoughnut"
+    (select)="onSelect($event)"
+    >
+  </ngx-charts-pie-chart>
+</div>
+<!-- [tooltipTemplate]="customTooltipTemplate" -->

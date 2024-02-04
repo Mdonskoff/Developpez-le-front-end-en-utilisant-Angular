@@ -1,11 +1,28 @@
-<h2>Name of the country</h2>
-<hr />
-{{ infoCountryArray[0].name }}
-{{ numberOfEntries }}
-{{ numberOfAtheletes }}
-{{ numberOfMedals }}
+<div class="mainPage">
+    <div class="titleOfPage">
+        <h2>{{ infoCountryArray[0].name }}</h2>
+    </div>
+
+    <div class="informationGroup">
+        <div class="informationFrame">
+            <p>
+                Number of entries <span>{{ numberOfEntries }}</span>
+            </p>
+        </div>
+        <div class="informationFrame">
+            <p>
+                Total number medals <span>{{ numberOfMedals }}</span>
+            </p>
+        </div>
+        <div class="informationFrame">
+            <p>
+                Total number of atheletes <span>{{ numberOfAtheletes }}</span>
+            </p>
+        </div>
+    </div>
 
 <ngx-charts-line-chart
+(window:resize)="onResize($event)"
 [view]= "[700, 300]"
 [showXAxisLabel]="showXAxisLabel"
 [showYAxisLabel]="showYAxisLabel"
@@ -17,3 +34,17 @@
 [results]="infoCountryArray"
 >
 </ngx-charts-line-chart>
+
+<p
+    (click)="onClick()"
+    [ngStyle]="{
+      cursor: 'pointer',
+      fontSize: '33px',
+      color: '#06818f',
+      fontWeight: 'bold'
+    }"
+  >
+    &larr; Back
+</p>
+
+</div>

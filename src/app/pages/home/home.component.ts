@@ -34,7 +34,9 @@ export class HomeComponent implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  
+  /*customTooltipTemplate(tooltipItem: any): string {
+    return `<span style="color: white;">${tooltipItem.data.name}: ${tooltipItem.data.value}</span>`;
+  }*/
 
   constructor(private olympicService: OlympicService, private router : Router) {}
 
@@ -56,6 +58,12 @@ export class HomeComponent implements OnInit {
       this.olympicArray = tempOlympicArray //le tableau olympic reçoit le tableau temporaire pour qu'il soit rempli une fois
       }),
     );
+  }
+
+  onResize(event : Event): void {
+    const target = event.target as Window
+    const width = target.innerWidth
+    this.view = [width , 400 ]
   }
 
   onSelect(countryName: {name: string}): void {  //au click on va dans l'autre URL du pays sélectionné

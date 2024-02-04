@@ -75,4 +75,13 @@ export class DetailCountryComponent implements OnInit, OnDestroy {
     this.infoCountryArray.push({name: this.detailCountry.country, series: this.seriesArray})
   }
 
+  onResize(event : Event): void {
+    const target = event.target as Window
+    const width = target.innerWidth
+    this.view = [width , 400 ]
+  }
+  
+  onClick(){
+    this.router.navigateByUrl("")
+  }
 }
