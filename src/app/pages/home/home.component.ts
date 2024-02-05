@@ -34,9 +34,10 @@ export class HomeComponent implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  /*customTooltipTemplate(tooltipItem: any): string {
-    return `<span style="color: white;">${tooltipItem.data.name}: ${tooltipItem.data.value}</span>`;
-  }*/
+   //customTooltipText(data: {name : string, value: number}): string {  
+  customTooltipText(data: any): string {
+      return `${data.data.name}<br>&#x1F3C5;${data.data.value}`
+  }
 
   constructor(private olympicService: OlympicService, private router : Router) {}
 
