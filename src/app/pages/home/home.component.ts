@@ -4,6 +4,7 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 import { OlympicCountry } from 'src/app/core/models/Olympic';
 import { LegendPosition } from '@swimlane/ngx-charts';
 import { Router } from '@angular/router';
+import { ErrorService } from 'src/app/core/services/error.service';
 
 
 @Component({
@@ -29,23 +30,23 @@ export class HomeComponent implements OnInit {
   showLabels: boolean = true;
   isDoughnut: boolean = false;
   legendPosition: LegendPosition = LegendPosition.Below;
+  
 
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
-
-   //customTooltipText(data: {name : string, value: number}): string {  
-  customTooltipText(data: any): string {
-      return `${data.data.name}<br>&#x1F3C5;${data.data.value}`
-  }
+    
+  customTooltipText(medal: {data : {name : string, value : number}}): string {
+        return `${medal.data.name}<br>&#x1F3C5;${medal.data.value}`
+    }
 
   constructor(private olympicService: OlympicService, private router : Router) {}
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics().pipe(  //appeler getOlympics du service
       tap((dataCountry : OlympicCountry[]) => {    
-          let tempOlympicArray: Object[] = [] //tableau temporaire avec le nom des pays et des médailles (fichier json de la doc)
-        dataCountry.forEach(data => {
+        this.olympicArray = []
+      dataCountry.forEach(data => {
           this.totalMedals = 0 //compter le nbr de médailles à chaque participation
           if (this.numberOfJOs < data.participations.length) {
             this.numberOfJOs = data.participations.length
@@ -54,11 +55,10 @@ export class HomeComponent implements OnInit {
             this.totalMedals = this.totalMedals + participation.medalsCount  //add toutes les médailles de chaque participation
           })
           let infoCountry: {name: string, value: number} = {name: data.country, value: this.totalMedals} //formater les données pour avoir pays + nbr de médailles
-          tempOlympicArray.push(infoCountry) //qui sont mises dans le tableau temporaire
+          this.olympicArray.push(infoCountry)          
         })
-      this.olympicArray = tempOlympicArray //le tableau olympic reçoit le tableau temporaire pour qu'il soit rempli une fois
       }),
-    );
+    );    
   }
 
   onResize(event : Event): void {

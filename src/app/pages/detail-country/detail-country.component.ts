@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, tap } from 'rxjs';
 import { OlympicCountry } from 'src/app/core/models/Olympic';
 import { Participation } from 'src/app/core/models/Participation';
+import { ErrorService } from 'src/app/core/services/error.service';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 
 @Component({
@@ -11,6 +12,8 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
   styleUrl: './detail-country.component.scss'
 })
 export class DetailCountryComponent implements OnInit, OnDestroy {
+
+  errorMessage!: string;
   
   detailCountry!: OlympicCountry;
 
@@ -53,7 +56,11 @@ export class DetailCountryComponent implements OnInit, OnDestroy {
       tap(olympicArray => { //parcourir les données sans modifier le flux
         this.getDetailCountry(country, olympicArray)!
       })
-    ).subscribe()
+    ).subscribe({
+      error : () => {
+        this.errorMessage = "An error occurred please try again"
+      }
+    });
   }
 
   getDetailCountry(country: string, olympicArray: OlympicCountry[]) { //Pour avoir le détail du pays qu'on a sélectionné

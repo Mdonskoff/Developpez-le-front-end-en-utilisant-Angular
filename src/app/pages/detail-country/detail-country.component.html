@@ -1,4 +1,8 @@
-<div class="mainPage">
+<ng-template #error>
+    <p>{{ errorMessage }}</p>
+</ng-template>
+
+<div class="mainPage" *ngIf="!errorMessage; else error">
     <div class="titleOfPage">
         <h2>{{ infoCountryArray[0].name }}</h2>
     </div>
@@ -21,30 +25,24 @@
         </div>
     </div>
 
-<ngx-charts-line-chart
-(window:resize)="onResize($event)"
-[view]= "[700, 300]"
-[showXAxisLabel]="showXAxisLabel"
-[showYAxisLabel]="showYAxisLabel"
-[xAxis]="xAxis"
-[yAxis]="yAxis"
-[xAxisLabel]="xAxisLabel"
-[yAxisLabel]="yAxisLabel"
-[timeline]="timeline"
-[results]="infoCountryArray"
->
-</ngx-charts-line-chart>
+    <ngx-charts-line-chart
+    (window:resize)="onResize($event)"
+    [view]= "[700, 300]"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxis]="xAxis"
+    [yAxis]="yAxis"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [timeline]="timeline"
+    [results]="infoCountryArray"
+    >
+    </ngx-charts-line-chart>
 
-<p
-    (click)="onClick()"
-    [ngStyle]="{
-      cursor: 'pointer',
-      fontSize: '33px',
-      color: '#06818f',
-      fontWeight: 'bold'
-    }"
-  >
-    &larr; Back
-</p>
+    <p class="buttonBack" 
+        (click)="onClick()"
+            >
+        &larr; Back
+    </p>
 
 </div>
