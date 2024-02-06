@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, tap } from 'rxjs';
 import { OlympicCountry } from 'src/app/core/models/Olympic';
@@ -12,8 +12,6 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
   styleUrl: './detail-country.component.scss'
 })
 export class DetailCountryComponent implements OnInit, OnDestroy {
-
-  errorMessage!: string;
   
   detailCountry!: OlympicCountry;
 
@@ -51,16 +49,13 @@ export class DetailCountryComponent implements OnInit, OnDestroy {
   
   
   ngOnInit(): void {
-    let country: string = this.routes.snapshot.paramMap.get("name")! //On récupère le nom du pays dans l'URL qui a la variable "name"
+    this.view = [window.innerWidth, 400]
+    let country: string = this.routes.snapshot.paramMap.get("name") || "" //On récupère le nom du pays dans l'URL qui a la variable "name"
     this.olympics$ = this.olympicService.getOlympics().pipe( //On régupère les infos générales de tous les pays de notre fichier json
       tap(olympicArray => { //parcourir les données sans modifier le flux
-        this.getDetailCountry(country, olympicArray)!
+        this.getDetailCountry(country, olympicArray)
       })
-    ).subscribe({
-      error : () => {
-        this.errorMessage = "An error occurred please try again"
-      }
-    });
+    ).subscribe();
   }
 
   getDetailCountry(country: string, olympicArray: OlympicCountry[]) { //Pour avoir le détail du pays qu'on a sélectionné
@@ -73,13 +68,13 @@ export class DetailCountryComponent implements OnInit, OnDestroy {
     })    
   }
   formatCountryData() {
-    this.detailCountry.participations.forEach((participation: Participation) => {
+      this.detailCountry.participations.forEach((participation: Participation) => {
       this.seriesArray.push({name: participation.year.toString(), value: participation.medalsCount})
       this.numberOfMedals = this.numberOfMedals + participation.medalsCount
       this.numberOfAtheletes = this.numberOfAtheletes + participation.athleteCount
     })
-    this.numberOfEntries = this.detailCountry.participations.length
-    this.infoCountryArray.push({name: this.detailCountry.country, series: this.seriesArray})
+      this.numberOfEntries = this.detailCountry.participations.length
+      this.infoCountryArray.push({name: this.detailCountry.country, series: this.seriesArray})
   }
 
   onResize(event : Event): void {

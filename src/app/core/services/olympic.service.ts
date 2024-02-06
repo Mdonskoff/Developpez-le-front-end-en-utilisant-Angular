@@ -19,7 +19,7 @@ export class OlympicService {
   loadInitialData() {
     return this.http.get<OlympicCountry[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
-      catchError((error, caught) => { //erreur dans l'URL
+      catchError((error, caught) => { //erreur dans le résultat de la requête (json mal formaté)
         console.error(error);
         // can be useful to end loading state and let the user know something went wrong
         this.olympics$.next([]);

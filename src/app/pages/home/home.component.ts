@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of, take, tap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription, of, take, tap } from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import { OlympicCountry } from 'src/app/core/models/Olympic';
 import { LegendPosition } from '@swimlane/ngx-charts';
@@ -13,13 +13,15 @@ import { ErrorService } from 'src/app/core/services/error.service';
   styleUrls: ['./home.component.scss'],
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   public olympics$: Observable<OlympicCountry[]> = of();
+
+  olympicsObs$!: Subscription
 
   olympicArray!: Object[];
   totalMedals: number = 0;
 
-  numberOfJOs: number = 0;
+  numberOfJOs!: number;
   numberOfCountry: number = 0;
   
   
@@ -41,12 +43,19 @@ export class HomeComponent implements OnInit {
     }
 
   constructor(private olympicService: OlympicService, private router : Router) {}
+  
+  ngOnDestroy(): void {
+    this.olympicsObs$.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this.olympics$ = this.olympicService.getOlympics().pipe(  //appeler getOlympics du service
+    this.view = [window.innerWidth, 400]
+    this.olympics$ = this.olympicService.getOlympics() //appeler getOlympics du service
+    this.olympicsObs$ = this.olympics$.pipe(  
       tap((dataCountry : OlympicCountry[]) => {    
         this.olympicArray = []
       dataCountry.forEach(data => {
+          this.numberOfJOs = 0
           this.totalMedals = 0 //compter le nbr de médailles à chaque participation
           if (this.numberOfJOs < data.participations.length) {
             this.numberOfJOs = data.participations.length
@@ -57,8 +66,8 @@ export class HomeComponent implements OnInit {
           let infoCountry: {name: string, value: number} = {name: data.country, value: this.totalMedals} //formater les données pour avoir pays + nbr de médailles
           this.olympicArray.push(infoCountry)          
         })
-      }),
-    );    
+      })
+    ).subscribe();    
   }
 
   onResize(event : Event): void {

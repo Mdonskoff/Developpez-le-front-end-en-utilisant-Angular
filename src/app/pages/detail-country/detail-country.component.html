@@ -1,8 +1,12 @@
 <ng-template #error>
-    <p>{{ errorMessage }}</p>
+    <p>
+        Please go back, refresh the page and if it still doesn't work, come back in
+        a few minutes
+    </p>
+    <a routerLink="/"> Go back</a>
 </ng-template>
 
-<div class="mainPage" *ngIf="!errorMessage; else error">
+<div class="mainPage" *ngIf= "infoCountryArray.length > 0; else error">
     <div class="titleOfPage">
         <h2>{{ infoCountryArray[0].name }}</h2>
     </div>
@@ -27,7 +31,7 @@
 
     <ngx-charts-line-chart
     (window:resize)="onResize($event)"
-    [view]= "[700, 300]"
+    [view]= "view"
     [showXAxisLabel]="showXAxisLabel"
     [showYAxisLabel]="showYAxisLabel"
     [xAxis]="xAxis"
