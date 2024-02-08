@@ -1,18 +1,52 @@
-<h2>Name of the country</h2>
-<hr />
-{{ detailCountry.country }}
+<ng-template #error>
+    <p>
+        Please go back, refresh the page and if it still doesn't work, come back in
+        a few minutes
+    </p>
+    <a routerLink="/"> Go back</a>
+</ng-template>
 
-<!--<ngx-charts-line-chart
-[view]="view"
-[scheme]="colorScheme"
-[legend]="legend"
-[showXAxisLabel]="showXAxisLabel"
-[showYAxisLabel]="showYAxisLabel"
-[xAxis]="xAxis"
-[yAxis]="yAxis"
-[xAxisLabel]="xAxisLabel"
-[yAxisLabel]="yAxisLabel"
-[timeline]="timeline"
-[results]="multi">
-</ngx-charts-line-chart>
--->
+<div class="mainPage" *ngIf= "infoCountryArray.length > 0; else error">
+    <div class="titleOfPage">
+        <h2>{{ infoCountryArray[0].name }}</h2>
+    </div>
+
+    <div class="informationGroup">
+        <div class="informationFrame">
+            <p>
+                Number of entries <span>{{ numberOfEntries }}</span>
+            </p>
+        </div>
+        <div class="informationFrame">
+            <p>
+                Total number medals <span>{{ numberOfMedals }}</span>
+            </p>
+        </div>
+        <div class="informationFrame">
+            <p>
+                Total number of atheletes <span>{{ numberOfAtheletes }}</span>
+            </p>
+        </div>
+    </div>
+
+    <ngx-charts-line-chart
+    (window:resize)="onResize($event)"
+    [view]= "view"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxis]="xAxis"
+    [yAxis]="yAxis"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [timeline]="timeline"
+    [results]="infoCountryArray"
+    >
+    </ngx-charts-line-chart>
+
+    <p class="buttonBack" 
+        (click)="onClick()"
+            >
+        &larr; Back
+    </p>
+
+</div>
