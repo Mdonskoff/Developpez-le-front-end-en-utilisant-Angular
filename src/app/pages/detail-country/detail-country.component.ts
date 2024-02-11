@@ -52,7 +52,7 @@ export class DetailCountryComponent implements OnInit, OnDestroy {
     this.view = [window.innerWidth, 400]
     let country: string = this.routes.snapshot.paramMap.get("name") || "" //On récupère le nom du pays dans l'URL qui a la variable "name"
     this.olympics$ = this.olympicService.getOlympics().pipe( //On régupère les infos générales de tous les pays de notre fichier json
-      tap(olympicArray => { //parcourir les données sans modifier le flux
+      tap(olympicArray => { //consulter les données reçues sans modifier le flux
         this.getDetailCountry(country, olympicArray)
       })
     ).subscribe();

@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ).subscribe();    
   }
 
-  onResize(event : Event): void {
+  onResize(event : Event): void {  //pour le responsive
     const target = event.target as Window
     const width = target.innerWidth
     this.view = [width , 400 ]
